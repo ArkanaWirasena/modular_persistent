@@ -1,0 +1,102 @@
+Enter your choice (1-6): 1
+
+Current Inventory: 
+-------------------------------
+id: P001   | name: Laptop       | price: $ 120.00 | stock: 15
+id: P002   | name: Mouse        | price: $  25.00 | stock: 40
+id: P003   | name: USB Cable    | price: $  45.00 | stock: 25
+id: P004   | name: Monitor      | price: $ 299.99 | stock: 10
+-------------------------------
+----------MENU----------
+1. Display All Products
+2. Add Product
+3. Update Stock
+4. Search Product
+5. Save Inventory
+6. Exit
+------------------------
+Enter your choice (1-6): 2
+
+Add New Product
+Product ID:P004 
+Product Name: Monitor
+Product Price: 299.99
+Stock Quantity: 10
+Product ID already exists.
+----------MENU----------
+1. Display All Products
+2. Add Product
+3. Update Stock
+4. Search Product
+5. Save Inventory
+6. Exit
+------------------------
+Enter your choice (1-6): 3
+
+Update Stock
+Enter Product ID: P004
+Enter new stock quantity: 10
+Stock updated successfully.
+----------MENU----------
+1. Display All Products
+2. Add Product
+3. Update Stock
+4. Search Product
+5. Save Inventory
+6. Exit
+------------------------
+Enter your choice (1-6): 4
+
+Search Product
+Enter Product ID to search: P004
+
+Product found:
+-------------------------------
+id: P004
+name: Monitor
+price: $299.99
+stock: 10
+-------------------------------
+----------MENU----------
+1. Display All Products
+2. Add Product
+3. Update Stock
+4. Search Product
+5. Save Inventory
+6. Exit
+------------------------
+Enter your choice (1-6): 5
+Inventory saved to inventory.json.
+----------MENU----------
+1. Display All Products
+2. Add Product
+3. Update Stock
+4. Search Product
+5. Save Inventory
+6. Exit
+------------------------
+Enter your choice (1-6): 6
+Save before exiting? (y/n): y
+Inventory saved to inventory.json.
+Exiting the program.
+PS C:\Users\wiras\modular_persistent> git add Dockerfile inventory.json
+>> git commit -m "Add Dockerfile and sample inventory"
+>> git push
+warning: in the working copy of 'inventory.json', LF will be replaced by CRLF the next time Git touches it
+[main aa8c795] Add Dockerfile and sample inventory
+ 1 file changed, 4 insertions(+)
+ create mode 100644 Dockerfile
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 32 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 372 bytes | 372.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/ArkanaWirasena/modular_persistent.git
+   aeaa240..aa8c795  main -> main
+PS C:\Users\wiras\modular_persistent> 
+ *  History restored 
+
+PS C:\Users\wiras\AppData\Local\Programs\Microsoft VS Code> 
+
