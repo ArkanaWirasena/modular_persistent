@@ -1,8 +1,5 @@
 import os
 import json
-import inventory
-print(inventory.__file__)
-print(dir(inventory.Inventory))
 from inventory import Inventory
 from product import Product
 
@@ -69,13 +66,8 @@ def add_product(inventory):
         print("Invalid price or stock.")
         return
     
-    for item in Inventory:
-        if item["id"] == product_id:
-            print("Product ID already exists.")
-            return
 
     inventory.add_product(Product(product_id, name, price, stock))
-    print("Product added successfully.")
 
 
 def update_stock(inventory):
