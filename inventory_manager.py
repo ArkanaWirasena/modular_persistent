@@ -1,7 +1,8 @@
 import os
 import json
 from inventory import Inventory
-from product import Product
+from can_be_shipped import CanBeShipped
+import product_factory
 
 #File handling
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -18,29 +19,19 @@ def load_inventory(inventory: Inventory):
 
         inventory.clear()
         for item in data:
-            product = Product(
-                item["id"],
-                item["name"],
-                float(item["price"]),
-                int(item["stock"])
-            )
-            inventory.add_product(product)
+            try:
+                inventory.add_product(product_factory.from_dict(item))
+            except (KeyError, ValueError, TypeError) as e:
+                print(f"Skipped invalid record {item.get('id','?')}: {e}")
 
         print("inventory.json found")
         print("Inventory loaded successfully")
-    except (json.JSONDecodeError, IOError, KeyError, ValueError) as e:
-        print(f"Error reading inventory.json: {e}")    
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"Error reading inventory.json: {e}")
             
 
-def save_inventory(inventory):
-    data = []
-    for p in inventory.get_all_products():   
-        data.append({
-            "id": p.get_id(),
-            "name": p.get_name(),
-            "price": p.get_price(),
-            "stock": p.get_stock()
-        })
+def save_inventory(inventory: Inventory):
+    data = [p.to_dict() for p in inventory.get_all_products()]
     
     try:
         with open(INVENTORY_FILE, "w") as f:
@@ -53,24 +44,47 @@ def save_inventory(inventory):
 def display_all(inventory):
     inventory.display_all()
 
+def choose_product_type():
+    keys = product_factory.get_type_keys()
+    print("Product type:")
+    for i, key in enumerate(keys, start=1):
+        print(f"{i}. {product_factory.get_label(key)}")
+    choice = input(f"Choose product type (1-{len(keys)}): ").strip()
+    if not choice.isdigit() or not (1 <= int(choice) <= len(keys)):
+        return None
+    return keys[int(choice) - 1]
 
-def add_product(inventory):
+
+def add_product(inventory: Inventory):
     print("\nAdd New Product")
-    product_id = input("Product ID:").strip()
-    name = input("Product Name: ").strip()
+    type_key = choose_product_type()
+    if type_key is None:
+        print("Invalid product type.")
+        return
 
+    product_id = input("Product ID: ").strip()
+    name = input("Product Name: ").strip()
+    if not product_id or not name:
+        print("Product ID and Name cannot be empty.")
+        return
+    
     try:
         price = float(input("Product Price: "))
         stock = int(input("Stock Quantity: "))
-    except ValueError:
-        print("Invalid price or stock.")
+        extra = {field: conv(input(prompt))
+                 for field, prompt, conv in product_factory.get_extra_fields(type_key)}
+        if price < 0 or stock < 0:
+            raise ValueError("Price and cannot be negative.")
+        product = product_factory.create_product(type_key, product_id, name,
+                                                 price, stock, **extra)
+    except ValueError as e:
+        print(f"Invalid input: {e}")
         return
     
+    inventory.add_product(product)
 
-    inventory.add_product(Product(product_id, name, price, stock))
 
-
-def update_stock(inventory):
+def update_stock(inventory: Inventory):
     print("\nUpdate Stock")
     item = inventory.search_product(input("Enter Product ID: "))
     
@@ -88,7 +102,7 @@ def update_stock(inventory):
     print("Stock updated successfully.")
 
    
-def search_product(inventory):
+def search_product(inventory: Inventory):
     print("\nSearch Product")
     item = inventory.search_product(input("Enter Product ID to search: "))
 
@@ -97,9 +111,13 @@ def search_product(inventory):
         return
 
     print("\nProduct found:")
-    print("-------------------------------")
+    print("-" * 95)
     item.display_information()
-    print("-------------------------------")
+    print(f"Fulfilment Info: {item.get_fulfilment_info()}")
+    #only objects that signed the CanBeShipped contract have a shipping cost
+    if isinstance(item, CanBeShipped):
+        print(f"Shipping Cost: ${item.calculate_shipping_cost():.2f}")
+    print("-" * 95)
 
 
 def menu():

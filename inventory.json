@@ -3,24 +3,48 @@
         "id": "P001",
         "name": "Laptop",
         "price": 120.0,
-        "stock": 15
+        "stock": 15,
+        "type": "physical",
+        "weight": 2.0
     },
     {
         "id": "P002",
         "name": "Mouse",
         "price": 25.0,
-        "stock": 40
+        "stock": 40,
+        "type": "physical",
+        "weight": 0.1
     },
     {
         "id": "P003",
         "name": "USB Cable",
         "price": 45.0,
-        "stock": 25
+        "stock": 25,
+        "type": "physical",
+        "weight": 0.05
     },
     {
         "id": "P004",
         "name": "Monitor",
         "price": 299.99,
-        "stock": 10
+        "stock": 10,
+        "type": "physical",
+        "weight": 5.0
+    },
+    {
+        "id": "D001",
+        "name": "Antivirus",
+        "price": 59.9,
+        "stock": 100,
+        "type": "digital",
+        "download_size": 350.0
+    },
+    {
+        "id": "P006",
+        "name": "Exclusive Gamepass by Arkana",
+        "price": 57.45,
+        "stock": 700,
+        "type": "subscription",
+        "duration_months": 24
     }
 ]
